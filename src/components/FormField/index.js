@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const FormFieldWrapper = styled.div`
   position: relative;
@@ -57,6 +57,16 @@ const Input = styled.input`
   &:focus:not([type="color"]) + span{
     transform: scale(.6) translateY(-10px);
   }
+
+  ${({ value }) => {
+    const hasValue = value.length > 0;
+    return hasValue && css`
+        &:not([type='color']) + ${Label.Text} {
+          transform: scale(.6) translateY(-10px);
+        }
+      `;
+  }
+}
 `;
 
 function FormField({
@@ -65,6 +75,8 @@ function FormField({
   const fieldId = `id_${name}+`;
   const isTextarea = type === 'textarea';
   const tag = isTextarea ? 'textarea' : 'input';
+  const hasValue = Boolean(value.lenght);
+
   return (
     <FormFieldWrapper>
       <Label
@@ -75,6 +87,7 @@ function FormField({
           id={fieldId}
           type={type}
           value={value}
+          hasValue={hasValue}
           name={name}
           onChange={onChange}
         />
