@@ -32,13 +32,10 @@ function CadastroCategoria() {
     if (window.location.href.includes('localhost')) {
       const URL = 'http://localhost:8080/categorias';
       fetch(URL)
-        .then(async (respostaDoServer) => {
-          if (respostaDoServer.ok) {
-            const resposta = await respostaDoServer.json();
-            setCategorias(resposta);
-            return;
-          }
-          throw new Error('Não foi possível pegar os dados');
+        .then((res) => {
+          res.json().then((re) => {
+            setCategorias(re);
+          });
         });
     }
   }, []);
@@ -55,7 +52,7 @@ function CadastroCategoria() {
 
         setCategorias([
           ...categorias,
-          values.nome,
+          values,
         ]);
 
         setValues(valoresIniciais);
@@ -101,8 +98,8 @@ function CadastroCategoria() {
 
       <ul>
         {categorias.map((categoria) => (
-          <li key={`${categoria.nome}`}>
-            {categoria}
+          <li key={`${categoria}${categoria.cor}`}>
+            {categoria.nome}
           </li>
         ))}
       </ul>
